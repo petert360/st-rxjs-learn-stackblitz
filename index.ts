@@ -3,13 +3,23 @@ import './style.css';
 
 import { Observable } from 'rxjs';
 
-let observable = new Observable((observer: any) => {
-  observer.next('Hi!');
-  observer.next('How are you?');
-  observer.complete();
+const observable = new Observable((observer: any) => {
+  try {
+    observer.next('Hi!');
+    observer.next('How are you?');
+    setInterval(() => {
+      observer.next('I am good.');
+    }, 2000);
+  } catch (err) {
+    observer.error(err);
+  }
 });
 
-observable.subscribe(
+setTimeout(() => {
+  observer.unsubscribe();
+}, 6001);
+
+const observer = observable.subscribe(
   (x: any) => addItem(x),
   (error: any) => addItem(error),
   () => addItem('Completed')
