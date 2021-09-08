@@ -15,15 +15,19 @@ const observable = new Observable((observer: any) => {
   }
 });
 
-setTimeout(() => {
-  observer.unsubscribe();
-}, 6001);
-
 const observer = observable.subscribe(
   (x: any) => addItem(x),
   (error: any) => addItem(error),
   () => addItem('Completed')
 );
+
+const observer2 = observable.subscribe((x: any) => addItem(x));
+
+observer.add(observer2);
+
+setTimeout(() => {
+  observer.unsubscribe();
+}, 6001);
 
 // ez a fv. jelenyíti meg JS kóddal a li elemet
 function addItem(val: any) {
